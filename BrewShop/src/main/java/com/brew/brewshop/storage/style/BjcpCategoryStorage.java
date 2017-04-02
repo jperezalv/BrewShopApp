@@ -4,32 +4,43 @@ import android.content.Context;
 
 import com.brew.brewshop.R;
 import com.brew.brewshop.storage.JsonReader;
+import com.brew.brewshop.storage.NameableList;
 
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class BjcpCategoryStorage {
-    private static BjcpCategoryList sStyleCache;
+    private static Map<String, NameableList> sStyleCache;
 
-    private Context mContext;
+    private final Context mContext;
+    private final String mGuideline;
 
-    public BjcpCategoryStorage(Context context) {
+    public BjcpCategoryStorage(Context context, String guideline) {
         mContext = context;
+        mGuideline = guideline;
+        sStyleCache = new HashMap<>(2);
     }
 
     public BjcpCategoryList getStyles() {
-        if (sStyleCache != null) {
-            return sStyleCache;
+        if (!sStyleCache.containsKey(mGuideline)) {
+            try {
+                JsonReader reader = new JsonReader(mContext, BjcpCategoryList.class);
+                sStyleCache.put(mGuideline, reader.readAll(
+                        mContext.getResources().getIdentifier(
+                                mGuideline.toLowerCase(Locale.US),
+                                "raw",
+                                mContext.getPackageName())
+                        , "beers"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        try {
-            JsonReader reader = new JsonReader(mContext, BjcpCategoryList.class);
-            sStyleCache = reader.readAll(R.raw.bjcp, "beers");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return sStyleCache;
+        return (BjcpCategoryList)sStyleCache.get(mGuideline);
     }
 }

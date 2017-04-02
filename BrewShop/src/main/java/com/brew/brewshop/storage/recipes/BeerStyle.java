@@ -8,6 +8,7 @@ import com.brew.brewshop.R;
 @SuppressWarnings("unused")
 public class BeerStyle implements Parcelable {
     public static final String BJCP_STYLE = "BJCP";
+    public static final String BJCP_2015_STYLE = "BJCP2015";
 
     private String style;
     private String substyle;
@@ -29,7 +30,7 @@ public class BeerStyle implements Parcelable {
         type = "";
         styleNumber = "";
         styleLetter = "";
-        styleGuide = BJCP_STYLE;
+        styleGuide = BJCP_2015_STYLE;
     }
 
     public BeerStyle(Parcel parcel) {
