@@ -46,18 +46,15 @@ public class BeerXMLReader extends AsyncTask<InputStream, Integer, Recipe[]> {
     private ProgressDialog dialog;
     private Context mContext = null;
     private RecipeListFragment parentFragment;
-    private BjcpCategoryList mBjcpCategoryList;
 
     public BeerXMLReader(RecipeListFragment parentFragment) {
         this.parentFragment = parentFragment;
         mContext = parentFragment.getActivity();
         dialog = new ProgressDialog(mContext);
-        mBjcpCategoryList = new BjcpCategoryStorage(mContext).getStyles();
     }
 
     public BeerXMLReader(Context context) {
         this.mContext = context;
-        mBjcpCategoryList = new BjcpCategoryStorage(context).getStyles();
     }
 
     @Override
@@ -385,6 +382,7 @@ public class BeerXMLReader extends AsyncTask<InputStream, Integer, Recipe[]> {
         double abvMax = getDouble(style, "ABV_MAX", xp);
 
         // Check to see if we have this style
+        BjcpCategoryList mBjcpCategoryList = new BjcpCategoryStorage(mContext, styleGuide).getStyles();
         BjcpCategory bjcpCategory = mBjcpCategoryList.findByName(name);
 
         if (bjcpCategory == null && name.contains("&amp")) {

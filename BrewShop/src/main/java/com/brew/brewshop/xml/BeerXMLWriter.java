@@ -50,20 +50,17 @@ public class BeerXMLWriter extends AsyncTask<OutputStream, Integer, Integer> {
     RecipeListFragment parentFragment = null;
     Context mContext = null;
     ProgressDialog progressDialog;
-    BjcpCategoryList mBjcpCategoryList;
     String TAG = BeerXMLWriter.class.getName();
 
     public BeerXMLWriter(RecipeListFragment parentFragment, Recipe[] recipes) {
         this.parentFragment = parentFragment;
         this.mContext = parentFragment.getActivity();
         this.progressDialog = new ProgressDialog(mContext);
-        this.mBjcpCategoryList = new BjcpCategoryStorage(mContext).getStyles();
         this.recipes = recipes;
     }
 
     public BeerXMLWriter(Context context, Recipe[] recipes) {
         this.mContext = context;
-        this.mBjcpCategoryList = new BjcpCategoryStorage(mContext).getStyles();
         this.recipes = recipes;
     }
 
@@ -344,6 +341,7 @@ public class BeerXMLWriter extends AsyncTask<OutputStream, Integer, Integer> {
     private Element createStyleElement(BeerStyle style, Document recipeDocument) {
         Element styleElement = recipeDocument.createElement("STYLE");
 
+        BjcpCategoryList mBjcpCategoryList = new BjcpCategoryStorage(mContext, style.getStyleGuide()).getStyles();
         BjcpCategory bjcpCategory = mBjcpCategoryList.findByName(style.getStyleName());
         if (bjcpCategory == null) {
             return styleElement;

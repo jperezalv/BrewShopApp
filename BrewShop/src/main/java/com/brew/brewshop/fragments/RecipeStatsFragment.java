@@ -73,7 +73,7 @@ public class RecipeStatsFragment extends Fragment implements AdapterView.OnItemS
             mRecipeName.setText(mRecipe.getName());
 
             mDescription = (TextView) root.findViewById(R.id.description);
-            mBjcpCategoryList = new BjcpCategoryStorage(getActivity()).getStyles();
+            mBjcpCategoryList = new BjcpCategoryStorage(getActivity(), mRecipe.getStyle().getStyleGuide()).getStyles();
 
             mStyle = (Spinner) root.findViewById(R.id.recipe_style);
             NameableAdapter styleAdapter = new NameableAdapter(getActivity(), mBjcpCategoryList);
